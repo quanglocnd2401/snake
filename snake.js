@@ -90,6 +90,39 @@ function changeDirection(e) {
     velocityY = 0;
   }
 }
+function touchMoveHandler(e) {
+  var touch = e.changedTouches[0];
+  var xDiff = touch.pageX - touchStartX;
+  var yDiff = touch.pageY - touchStartY;
+
+  if (Math.abs(xDiff) > Math.abs(yDiff)) {
+    if (xDiff > 0 && velocityX != -1) {
+      velocityX = 1;
+      velocityY = 0;
+    } else if (xDiff < 0 && velocityX != 1) {
+      velocityX = -1;
+      velocityY = 0;
+    }
+  } else {
+    if (yDiff > 0 && velocityY != -1) {
+      velocityX = 0;
+      velocityY = 1;
+    } else if (yDiff < 0 && velocityY != 1) {
+      velocityX = 0;
+      velocityY = -1;
+    }
+  }
+}
+
+// Lắng nghe sự kiện cảm ứng di chuyển
+var touchStartX, touchStartY;
+document.addEventListener('touchstart', function(e) {
+  var touch = e.changedTouches[0];
+  touchStartX = touch.pageX;
+  touchStartY = touch.pageY;
+});
+
+document.addEventListener('touchend', touchMoveHandler);
 // ramdum vi tri thuc an
 function placeFood() {
   foodX = Math.floor(Math.random() * cols) * blockSize;
